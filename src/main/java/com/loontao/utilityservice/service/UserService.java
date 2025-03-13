@@ -87,4 +87,13 @@ public class UserService {
             System.err.println("Failed to trigger webhook: " + e.getMessage());
         }
     }
+
+    public boolean deleteUser(String phoneNumber) {
+        User authenticatedUser = userRepository.findByPhoneNumber(phoneNumber).orElse(null);
+        if (authenticatedUser == null) {
+            return false;
+        }
+        userRepository.delete(authenticatedUser);
+        return true;
+    }
 }

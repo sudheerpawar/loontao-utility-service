@@ -197,7 +197,7 @@ public User setLastName(String lastName) {
     return this;
 }
 
-@ManyToOne(cascade = CascadeType.REMOVE)
+@ManyToOne
 @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
 private Role role;
 

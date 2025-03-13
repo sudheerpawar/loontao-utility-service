@@ -3,6 +3,7 @@ package com.loontao.utilityservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -78,7 +79,9 @@ public class AuthController {
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setToken(jwtToken);
             loginResponse.setExpiresIn(jwtService.getExpirationTime());
-            loginResponse.setAuthenticatedUser(authenticatedUser);
+            loginResponse.setEmailId(authenticatedUser.getUsername());
+            loginResponse.setPhoneNumber(authenticatedUser.getPhoneNumber());
+            loginResponse.setRole(authenticatedUser.getRole().toString());
             loginResponse.setSuccess(true);
             return ResponseEntity.ok(loginResponse);
         } catch (Exception e) {
@@ -86,4 +89,28 @@ public class AuthController {
         }
     }
 
+    @DeleteMapping("/delete/account")
+    public ResponseEntity<?> deleteAccount(@RequestBody LoginUserDto loginUserDto) {
+        try {
+            User authenticatedUser = authenticationService.authenticate(loginUserDto);
+    
+            if (authenticatedUser == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
+            }
+    
+            if (!authenticatedUser.isEnabled()) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User account is disabled");
+            }
+    
+            boolean isDeleted = userService.deleteUser(authenticatedUser.getPhoneNumber());
+    
+            if (isDeleted) {
+                return ResponseEntity.ok("User account deleted successfully");
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during account deletion");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during account deletion");
+        }
+    }
 }

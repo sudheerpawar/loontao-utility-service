@@ -40,7 +40,7 @@ public class UserRewardPointsService {
             
                 if (existingEntity.isPresent()) {
                     UserRewardPointsEntity userRewardPointsEntity = existingEntity.get();
-                    userRewardPointsEntity.setRewardPoints(userRewardPointsEntity.getRewardPoints() + userRewardPointsRequestDTO.getRewardPoints());
+                    userRewardPointsEntity.setRewardPoints(userRewardPointsRequestDTO.getRewardPoints());
                     userRewardPointsRepository.save(userRewardPointsEntity);
                 } else {
                     UserRewardPointsEntity newEntity = new UserRewardPointsEntity();
