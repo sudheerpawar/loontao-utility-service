@@ -19,6 +19,12 @@ public class TokenGenerationController {
         this.tokenGenerationService = tokenGenerationService;
     }
 
+    /**
+     * Generate a JWT token for a user by their email address.
+     * 
+     * @param email The email address of the user to generate the token for.
+     * @return A ResponseEntity containing the JWT token and its expiration time.
+     */
     @GetMapping("/generate-token/{email}")
     public ResponseEntity<JwtDTO> generateTokenByEmail(@PathVariable String email) {
         try {
