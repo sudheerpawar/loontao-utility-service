@@ -1,11 +1,8 @@
 package com.loontao.utilityservice.controller;
 
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import com.loontao.utilityservice.dto.JwtDTO;
 import com.loontao.utilityservice.dto.ReservationDTO;
 import com.loontao.utilityservice.entity.ReservationEntity;
 import com.loontao.utilityservice.exceptions.ResourceNotFoundException;
@@ -53,14 +50,5 @@ public class ReservationController {
     @DeleteMapping("/delete/{id}")
     public void deleteReservation(@PathVariable Long id) {
         service.deleteReservation(id);
-    }
-
-    @GetMapping("/generate-token/{email}")
-    public ResponseEntity<JwtDTO> generateTokenByEmail(@PathVariable String email) {
-        try {
-            return service.generateTokenByEmail(email);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new JwtDTO("An error occurred during token generation", null));
-        }
-    }   
+    } 
 }

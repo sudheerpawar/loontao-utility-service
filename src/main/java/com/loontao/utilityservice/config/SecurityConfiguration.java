@@ -40,7 +40,7 @@ public class SecurityConfiguration {
                         "/swagger-ui.html",
                         "/users/getUserFromPhone")
                         .permitAll()
-                        .requestMatchers("/auth/**", "/reservations/generate-token/**")
+                        .requestMatchers("/auth/login", "/auth/signup", "/jwt/generate-token/**", "/rwdpts/addrwdpts")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

@@ -1,14 +1,10 @@
 package com.loontao.utilityservice.service;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import com.loontao.utilityservice.dto.JwtDTO;
 import com.loontao.utilityservice.dto.ReservationDTO;
 import com.loontao.utilityservice.entity.ReservationEntity;
 import com.loontao.utilityservice.exceptions.ResourceNotFoundException;
 import com.loontao.utilityservice.repository.ReservationRepository;
-import com.loontao.utilityservice.repository.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,12 +13,8 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final UserRepository userRepository;
-    private final JwtService jwtService;
-    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository, JwtService jwtService) {
+    public ReservationService(ReservationRepository reservationRepository) {
         this.reservationRepository = reservationRepository;
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
     }
 
     public ReservationEntity addReservation(ReservationDTO reservationDTO) {
@@ -82,13 +74,4 @@ public class ReservationService {
         }
         reservationRepository.deleteById(id);
     }
-
-    public ResponseEntity<JwtDTO> generateTokenByEmail(String email) {
-        if (userRepository.findByEmailId(email).isEmpty()) {
-            throw new ResourceNotFoundException("User with email " + email + " not registered.");
-        }
-        String jwtToken = jwtService.generateToken(userRepository.findByEmailId(email).get());
-        return ResponseEntity.ok(new JwtDTO(jwtToken, jwtService.extractExpiration(jwtToken).toString()));
-    }   
-
 }
