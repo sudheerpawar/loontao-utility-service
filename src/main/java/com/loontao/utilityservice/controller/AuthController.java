@@ -3,8 +3,10 @@ package com.loontao.utilityservice.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,6 +63,25 @@ public class AuthController {
         }
     }
 
+    @PutMapping("/update/account")
+    public ResponseEntity<?> updateAccount(@RequestBody RegisterUserDto registerUserDto) {
+        try {
+            if (registerUserDto == null || registerUserDto.getPhoneNumber() == null || registerUserDto.getPhoneNumber().isEmpty()) {
+                return ResponseEntity.badRequest().body("User details are required. Phone number is mandatory for account update.");
+            }
+            // Update the user account 
+            User updatedUser = authenticationService.updateAccount(registerUserDto);
+    
+            if (updatedUser == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found or update failed");
+            }
+    
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during account update: " + e.getMessage());
+        }
+    }
+
     @PostMapping("/login")
     public ResponseEntity<?> authenticate(@RequestBody LoginUserDto loginUserDto) {
         try {
@@ -84,8 +105,10 @@ public class AuthController {
             loginResponse.setRole(authenticatedUser.getRole().toString());
             loginResponse.setSuccess(true);
             return ResponseEntity.ok(loginResponse);
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during authentication. Please check the credentials and try again.");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during authentication");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during authentication: " + e.getMessage());
         }
     }
 
@@ -113,4 +136,5 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during account deletion");
         }
     }
+    
 }

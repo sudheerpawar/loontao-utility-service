@@ -3,6 +3,7 @@ package com.loontao.utilityservice.service;
 import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,7 +56,6 @@ public class AuthenticationService {
             return null;
         }
 
-
         User user = new User()
                 .setFullname(input.getFullname())
                 .setEmailId(input.getEmailId())
@@ -74,13 +74,50 @@ public class AuthenticationService {
         return userRepository.save(user);
     }
 
+    /*
+     * Updates the user account with the provided details.
+     * @param registerUserDto The DTO containing user details to update.
+     * @return The updated User object if successful, otherwise null.
+     */
+     public User updateAccount(RegisterUserDto registerUserDto) {
+        if (registerUserDto == null || registerUserDto.getPhoneNumber() == null || registerUserDto.getPhoneNumber().isEmpty()) {
+            return null; // Invalid input
+        }
+        // Check if the user exists by phone number
+        // If phone number is not provided, return null
+        Optional<User> userOptional = userRepository.findByPhoneNumber(registerUserDto.getPhoneNumber());
+        if (userOptional.isEmpty()) {
+            return null; // User not found
+        }
+
+        // Update the user details
+        // If user is not found, return null
+        User user = userOptional.get();
+        user.setFullname(registerUserDto.getFullname())
+            .setEmailId(registerUserDto.getEmailId())
+            .setAddress(registerUserDto.getAddress())
+            .setCity(registerUserDto.getCity())
+            .setCountry(registerUserDto.getCountry())
+            .setPincode(registerUserDto.getPincode())
+            .setDob(registerUserDto.getDateOfBirth())
+            .setFirstName(registerUserDto.getFirstName())
+            .setLastName(registerUserDto.getLastName());
+
+        if (registerUserDto.getPassword() != null && !registerUserDto.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(registerUserDto.getPassword()));
+        }
+
+        // Save the updated user
+        return userRepository.save(user);
+    }
+
     /**
      * Authenticates a user based on the provided login credentials.
      * 
      * @param input The login credentials containing email/phone number/first name, and password.
      * @return The authenticated user if successful, otherwise null.
      */
-    public User authenticate(LoginUserDto input) {
+    public User authenticate(LoginUserDto input) throws BadCredentialsException {
 
         if (input.getEmailId()!=null)
         {
@@ -115,5 +152,7 @@ public class AuthenticationService {
                 .orElseThrow();
         } else return null;
     }
+
+   
 }
 
