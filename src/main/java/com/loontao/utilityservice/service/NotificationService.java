@@ -12,9 +12,9 @@ import java.util.Optional;
 @Service
 public class NotificationService {
 
-    private NotificationRepository notificationRepository;
+    private final NotificationRepository notificationRepository;
 
-    public void setNotificationRepository(NotificationRepository notificationRepository) {
+    public NotificationService(NotificationRepository notificationRepository) {
         this.notificationRepository = notificationRepository;
     }
 

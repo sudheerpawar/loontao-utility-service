@@ -12,9 +12,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/notification")
 public class NotificationController {
-    private NotificationService notificationService;
 
-    public void setNotificationService(NotificationService notificationService) {
+    private final NotificationService notificationService;
+
+    public NotificationController(NotificationService notificationService) {
         this.notificationService = notificationService;
     }
 
@@ -24,7 +25,7 @@ public class NotificationController {
         return ResponseEntity.ok(notificationList);
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/getById/{id}")
     public Notification getNotificationById(@PathVariable Long id) {
         return notificationService.getNotificationById(id).orElseThrow(() -> new ResourceNotFoundException("Entry not found"));
     }
@@ -34,12 +35,12 @@ public class NotificationController {
         return notificationService.addNotification(notificationDTO);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/updateById/{id}")
     public Notification updateNotificationById(@PathVariable Long id, @RequestBody NotificationDTO notificationDTO) {
         return notificationService.updateNotificationById(id, notificationDTO);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/deleteById/{id}")
     public void deleteNotificationById(@PathVariable Long id) {
         notificationService.deleteNotificationById(id);
     }

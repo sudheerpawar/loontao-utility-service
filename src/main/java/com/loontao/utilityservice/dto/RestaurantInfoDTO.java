@@ -1,6 +1,5 @@
 package com.loontao.utilityservice.dto;
 
-import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
