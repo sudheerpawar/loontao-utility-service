@@ -1,14 +1,14 @@
 package com.loontao.utilityservice.dto;
 
+import jakarta.persistence.Column;
 import lombok.Data;
 
 @Data
 public class RestaurantInfoDTO {
 
     private Long id;
-    private String day;
-    private String startTime;
-    private String endTime;
-    private String contact;
-    
+    private String category;
+    private String content1;
+    private String content2;
+    private String content3;
 }
