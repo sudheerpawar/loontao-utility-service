@@ -31,12 +31,12 @@ public class ReservationController {
         return service.getAllReservations();
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/getById/{id}")
     public ReservationEntity getReservation(@PathVariable Long id) {
         return service.getReservationById(id).orElseThrow(() -> new ResourceNotFoundException("Reservation not found"));
     }
 
-    @GetMapping("/get/{phoneNumber}")
+    @GetMapping("/getByPhone/{phoneNumber}")
     public List<ReservationEntity> getReservationByPhoneNumber(@PathVariable String phoneNumber) {
         return service.getReservationByPhoneNumber(phoneNumber);
     }
