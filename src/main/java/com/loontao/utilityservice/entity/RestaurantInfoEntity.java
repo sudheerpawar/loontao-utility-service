@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "restaurant_info")
+@Table(name = "restaurant_data")
 public class RestaurantInfoEntity {
 
     @Id
@@ -17,16 +17,16 @@ public class RestaurantInfoEntity {
     @Column(nullable = false, name = "id")
     private Long id;
 
-    @Column(nullable = false, name = "day")
-    private String day;
+    @Column(nullable = false, name = "category")
+    private String category;
 
-    @Column(nullable = false, name = "start_time")
-    private String startTime;
+    @Column(nullable = false, name = "content1")
+    private String content1;
 
-    @Column(nullable = false, name = "end_time")
-    private String endTime;
+    @Column(nullable = false, name = "content2")
+    private String content2;
 
-    @Column(nullable = false, name = "contact")
-    private String contact;
+    @Column(nullable = false, name = "content3")
+    private String content3;
 
 }

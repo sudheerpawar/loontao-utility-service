@@ -31,19 +31,19 @@ public class RestaurantInfoService {
 
     public RestaurantInfoEntity addRestaurantInfo(RestaurantInfoDTO restaurantInfoDTO) {
         RestaurantInfoEntity restaurantInfoEntity = new RestaurantInfoEntity();
-        restaurantInfoEntity.setDay(restaurantInfoDTO.getDay());
-        restaurantInfoEntity.setStartTime(restaurantInfoDTO.getStartTime());
-        restaurantInfoEntity.setEndTime(restaurantInfoDTO.getEndTime());
-        restaurantInfoEntity.setContact(restaurantInfoDTO.getContact());
+        restaurantInfoEntity.setCategory(restaurantInfoDTO.getCategory());
+        restaurantInfoEntity.setContent1(restaurantInfoDTO.getContent1());
+        restaurantInfoEntity.setContent2(restaurantInfoDTO.getContent2());
+        restaurantInfoEntity.setContent3(restaurantInfoDTO.getContent3());
         return restaurantInfoRepository.save(restaurantInfoEntity);
     }
 
     public RestaurantInfoEntity updateRestaurantInfoById(Long id, RestaurantInfoDTO restaurantInfoDTO) {
         return restaurantInfoRepository.findById(id).map(restaurantInfoEntity -> {
-            restaurantInfoEntity.setDay(restaurantInfoDTO.getDay());
-            restaurantInfoEntity.setStartTime(restaurantInfoDTO.getStartTime());
-            restaurantInfoEntity.setEndTime(restaurantInfoDTO.getEndTime());
-            restaurantInfoEntity.setContact(restaurantInfoDTO.getContact());
+            restaurantInfoEntity.setCategory(restaurantInfoDTO.getCategory());
+            restaurantInfoEntity.setContent1(restaurantInfoDTO.getContent1());
+            restaurantInfoEntity.setContent2(restaurantInfoDTO.getContent2());
+            restaurantInfoEntity.setContent3(restaurantInfoDTO.getContent3());
             return restaurantInfoRepository.save(restaurantInfoEntity);
         }).orElseThrow(() -> new RuntimeException("Timing not found"));
     }
